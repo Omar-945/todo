@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1074439302053",
+    "project_id": "todo-faac5",
+    "storage_bucket": "todo-faac5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074439302053:android:0423b7e86e876e21e0164c",
+        "android_client_info": {
+          "package_name": "com.example.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074439302053-n185vic4vddp9lssjm221941u2tu02c0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeaPmCaQrJbYpoici-E8qD_4Am0qXlY8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074439302053-n185vic4vddp9lssjm221941u2tu02c0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1074439302053-8njnm4saep1bl5o3u858ecungq7k7kf3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todo.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
