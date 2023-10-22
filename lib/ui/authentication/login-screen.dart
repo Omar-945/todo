@@ -1,14 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/Provider/auth_provider.dart';
 import 'package:todo/ui/authentication/re_use_header.dart';
 import 'package:todo/ui/authentication/register_screen.dart';
 import 'package:todo/ui/authentication/reset_password.dart';
 import 'package:todo/ui/authentication/user_valid_data.dart';
 
 import '../re_use_widgets/cusom_text_field.dart';
-import '../re_use_widgets/dialogs.dart';
-import 'firebase_code_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = 'loginScreen';
@@ -30,10 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
     TextStyle formStyle = GoogleFonts.quicksand(
         fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Header(title: 'Login'),
+            Header(title: AppLocalizations.of(context)!.login),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
@@ -42,26 +43,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "Email",
+                      AppLocalizations.of(context)!.email,
                       style: formStyle,
                     ),
                     CustomTextField(
                       check: validEmail,
                       control: email,
-                      hint: 'Your Email',
+                      hint: AppLocalizations.of(context)!.your_email,
                       type: TextInputType.emailAddress,
                     ),
                     const SizedBox(
                       height: 30,
                     ),
                     Text(
-                      "Password",
+                      AppLocalizations.of(context)!.password,
                       style: formStyle,
                     ),
                     CustomTextField(
                       check: validPasswordLogIn,
                       control: password,
-                      hint: 'Your password',
+                      hint: AppLocalizations.of(context)!.your_password,
                       isSecrete: isHidePassword,
                       passwordIcon: IconButton(
                           onPressed: () {
@@ -80,14 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Expanded(
                             child: SizedBox(
-                          width: double.infinity,
-                        )),
+                              width: double.infinity,
+                            )),
                         TextButton(
                             onPressed: () {
                               Navigator.pushNamed(context, ResetPassword.route);
                             },
                             child: Text(
-                              'Forgot Password?',
+                              AppLocalizations.of(context)!.forget_password,
                               textAlign: TextAlign.right,
                               style: GoogleFonts.quicksand(
                                   color: Color(0xFF302F2F), fontSize: 12),
@@ -107,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           createAcount();
                         },
                         child: Text(
-                          "Login",
+                          AppLocalizations.of(context)!.login,
                           style: GoogleFonts.quicksand(
                               fontSize: 18,
                               color: Colors.white,
@@ -122,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Don’t have an account yet? Register',
+                          AppLocalizations.of(context)!.have_account,
                           style: GoogleFonts.quicksand(
                               fontSize: 12,
                               fontWeight: FontWeight.normal,
@@ -133,11 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushNamed(context, Registration.route);
                           },
                           child: Text(
-                            ' here',
+                            AppLocalizations.of(context)!.here,
                             style: GoogleFonts.quicksand(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.blueAccent),
                           ),
                         )
                       ],
@@ -159,51 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (form.currentState?.validate() == false) {
       return;
     }
-    try {
-      Dialogs.showLoadingDialog(context, 'Loading...', isCanceled: false);
-      var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email.text, password: password.text);
-      Dialogs.closeMessageDialog(context);
-      FirebaseAuth.instance.currentUser?.emailVerified == true
-          ? Dialogs.showMessageDialog(context, "Email verified",
-              positiveActionText: 'ok')
-          : Dialogs.showMessageDialog(
-              context, "Please go to your email to verify your account",
-              icon: Icon(
-                Icons.dangerous,
-                color: Colors.red,
-                size: 30,
-              ));
-    } on FirebaseAuthException catch (e) {
-      Dialogs.closeMessageDialog(context);
-      if (e.code == FireAuthErrors.userNotFound) {
-        Dialogs.showMessageDialog(context, 'email or password is wrong',
-            isClosed: false,
-            positiveActionText: 'ok',
-            icon: Icon(
-              Icons.dangerous,
-              color: Colors.red,
-              size: 30,
-            ));
-      } else if (e.code == FireAuthErrors.wrongPassword) {
-        Dialogs.showMessageDialog(context, 'email or password is wrong',
-            isClosed: false,
-            positiveActionText: 'ok',
-            icon: Icon(
-              Icons.dangerous,
-              color: Colors.red,
-              size: 30,
-            ));
-      } else {
-        Dialogs.showMessageDialog(context, 'email or password is wrong',
-            isClosed: false,
-            positiveActionText: 'ok',
-            icon: Icon(
-              Icons.dangerous,
-              color: Colors.red,
-              size: 30,
-            ));
-      }
-    }
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await authProvider.login(email.text, password.text, context);
   }
 }

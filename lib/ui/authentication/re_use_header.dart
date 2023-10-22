@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 class Header extends StatelessWidget {
   String title;
 
@@ -17,7 +16,8 @@ class Header extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            margin: const EdgeInsets.only(left: 20, top: 250, bottom: 20),
+            margin: const EdgeInsets.only(
+                left: 20, top: 250, bottom: 20, right: 20),
             child: Text(
               title,
               style: GoogleFonts.quicksand(

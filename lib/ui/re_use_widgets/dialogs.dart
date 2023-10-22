@@ -53,7 +53,6 @@ class Dialogs {
     if (negativeActionText != null) {
       actions.add(TextButton(
           onPressed: () {
-            Navigator.pop(context);
             negativeAction?.call();
           },
           child: Text(
