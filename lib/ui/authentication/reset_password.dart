@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/ui/authentication/login-screen.dart';
 import 'package:todo/ui/authentication/re_use_header.dart';
@@ -25,10 +26,11 @@ class _ResetPasswordState extends State<ResetPassword> {
     TextStyle formStyle = GoogleFonts.quicksand(
         fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Header(title: 'Reset Password'),
+            Header(title: AppLocalizations.of(context)!.reset_password),
             Padding(
               padding: EdgeInsets.all(20),
               child: Form(
@@ -39,13 +41,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        "Email",
+                        AppLocalizations.of(context)!.email,
                         style: formStyle,
                       ),
                       CustomTextField(
                         check: validEmail,
                         control: email,
-                        hint: 'Your Email',
+                        hint: AppLocalizations.of(context)!.your_email,
                         type: TextInputType.emailAddress,
                       ),
                       const SizedBox(
@@ -61,7 +63,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             resetPassword();
                           },
                           child: Text(
-                            'send link to rest password',
+                            AppLocalizations.of(context)!.send_link,
                             style: GoogleFonts.quicksand(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -85,16 +87,18 @@ class _ResetPasswordState extends State<ResetPassword> {
       return;
     }
     try {
-      Dialogs.showLoadingDialog(context, 'loading...');
+      Dialogs.showLoadingDialog(context, AppLocalizations.of(context)!.loading);
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email.text);
       Dialogs.closeMessageDialog(context);
-      Dialogs.showMessageDialog(context, 'go to your email to change password',
+      Dialogs.showMessageDialog(
+          context, AppLocalizations.of(context)!.password_dialog,
           icon: Icon(
             Icons.check_circle_sharp,
             color: Colors.green,
             size: 30,
           ),
-          positiveActionText: 'ok', positiveAction: () {
+          positiveActionText: AppLocalizations.of(context)!.ok,
+          positiveAction: () {
         Navigator.pushReplacementNamed(context, LoginScreen.route);
       });
     } on FirebaseAuthException catch (e) {

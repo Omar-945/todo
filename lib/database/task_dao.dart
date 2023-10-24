@@ -4,6 +4,10 @@ import 'package:todo/database/user_dao.dart';
 import 'models/task.dart';
 
 class TasksDao {
+  static var date = DateTime.now();
+
+  static bool isFirst = true;
+
   static CollectionReference<Task> getTaskCollection(String? userId) {
     return UserDao.getUserCollection()
         .doc(userId)
@@ -21,7 +25,22 @@ class TasksDao {
     return task.set(userTask);
   }
 
+  static Stream<List<Task>> getSearchTasks(String userId) async* {
+    var filter = date.copyWith(
+        microsecond: 0, millisecond: 0, second: 0, minute: 0, hour: 0);
+    var taskCollection = getTaskCollection(userId);
+    var tasksSnapshot = taskCollection
+        .where('date',
+            isEqualTo: Timestamp.fromMillisecondsSinceEpoch(
+                filter.millisecondsSinceEpoch))
+        .snapshots();
+    var snapShots = tasksSnapshot
+        .map((snapshots) => snapshots.docs.map((e) => e.data()).toList());
+    yield* snapShots;
+  }
+
   static Stream<List<Task>> getTasks(String userId) async* {
+    isFirst = false;
     var taskCollection = getTaskCollection(userId);
     var tasksSnapshot = taskCollection.snapshots();
     var snapShots = tasksSnapshot
@@ -34,8 +53,7 @@ class TasksDao {
     return await taskCollection.doc(taskId).delete();
   }
 
-  static Future<void> updateTask(
-      String? userId, String? taskId, Map<String, dynamic> newTask) {
+  static Future<void> updateTask(String? userId, String? taskId, Map<String, dynamic> newTask) {
     var taskCollection = getTaskCollection(userId);
     return taskCollection.doc(taskId).update(newTask);
   }
