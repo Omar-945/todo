@@ -1,9 +1,6 @@
-import 'package:calendar_appbar/calendar_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/Provider/auth_provider.dart';
-import 'package:todo/Provider/settings_provider.dart';
-import 'package:todo/database/task_dao.dart';
 import 'package:todo/ui/tabs/notes/add_task.dart';
 import 'package:todo/ui/tabs/notes/notes_screen.dart';
 import 'package:todo/ui/tabs/settings%20/settings_screen.dart';
@@ -38,26 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ];
     List<Widget> screens = [NotesScreen(), Settings()];
-    if (index == 0) {
-      appbar = CalendarAppBar(
-        locale: Provider.of<SettingsProvider>(context).local,
-        signOut: signOut,
-        accent: Colors.blueAccent[100],
-        backButton: false,
-        onDateChanged: (value) {
-          setState(() {
-            date = value;
-            TasksDao.date = date ?? DateTime.now();
-          });
-        },
-        selectedDate: DateTime.now(),
-        lastDate: DateTime.now().add(Duration(days: 30)),
-      );
-    } else {
-      appbar = null;
-    }
     return Scaffold(
-      body: SafeArea(child: screens[index]),
+      body: screens[index],
       floatingActionButton: Container(
         width: 63,
         height: 63,
