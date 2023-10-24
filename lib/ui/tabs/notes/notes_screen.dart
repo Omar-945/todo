@@ -8,7 +8,6 @@ import 'package:todo/database/task_dao.dart';
 import 'package:todo/ui/tabs/notes/show_note.dart';
 
 import '../../../database/models/task.dart';
-import '../../re_use_widgets/dialogs.dart';
 import 'note_container.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -128,14 +127,7 @@ class _NotesScreenState extends State<NotesScreen> {
                         child: CircularProgressIndicator(),
                       );
                     }
-                    if (snapshot.hasError) {
-                      return Dialogs.showMessageDialog(
-                          context, 'SomeThing went wrong !',
-                          icon: Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ));
-                    }
+
                     List<Task>? tasks = snapshot.data;
                     return ListView.separated(
                       itemBuilder: (context, index) {
