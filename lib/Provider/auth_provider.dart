@@ -78,9 +78,9 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void signOut(BuildContext context) {
+ signOut(BuildContext context) async {
     user = null;
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
     Navigator.pushReplacementNamed(context, LoginScreen.route);
   }
 

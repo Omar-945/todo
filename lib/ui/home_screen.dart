@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/Provider/auth_provider.dart';
 import 'package:todo/Provider/settings_provider.dart';
+import 'package:todo/database/task_dao.dart';
 import 'package:todo/ui/tabs/notes/add_task.dart';
 import 'package:todo/ui/tabs/notes/notes_screen.dart';
 import 'package:todo/ui/tabs/settings%20/settings_screen.dart';
@@ -46,17 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
         onDateChanged: (value) {
           setState(() {
             date = value;
+            TasksDao.date = date ?? DateTime.now();
           });
         },
-        firstDate: DateTime.now().subtract(Duration(days: 140)),
+        selectedDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 30)),
       );
     } else {
       appbar = null;
     }
     return Scaffold(
-      appBar: appbar,
-      body: screens[index],
+      body: SafeArea(child: screens[index]),
       floatingActionButton: Container(
         width: 63,
         height: 63,
