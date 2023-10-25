@@ -1,6 +1,6 @@
 # Todo app 
 
-##Features 
+## Features 
 - add tasks
 - delete tasks
 - update tasks
